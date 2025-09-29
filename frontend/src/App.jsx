@@ -159,7 +159,7 @@ export default function App() {
     <div className="page">
       <div className="container">
         <header className="header">
-          <h1 className="title">Realtime Bingo (WebSockets)</h1>
+          <h1 className="title">Realtime Bingo by great Ponmuthu</h1>
           <div className="actions">
             <button onClick={createRoom} className="btn primary">Create Room</button>
             <input ref={roomInputRef} placeholder="ROOM ID" className="input" aria-label="Room ID"/>
