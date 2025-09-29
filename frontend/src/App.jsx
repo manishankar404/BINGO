@@ -82,6 +82,13 @@ export default function App() {
   const [roomId, setRoomId] = useState('');
   const [playerRole, setPlayerRole] = useState(null); // 'P1' | 'P2' | 'SPECTATOR'
   const [state, setState] = useState(null);
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('theme') || 'light';
+    } catch {
+      return 'light';
+    }
+  });
   const roomInputRef = useRef(null);
 
   // Reconnection + state sync
@@ -105,6 +112,15 @@ export default function App() {
       socket.off('stateUpdate', onState);
     };
   }, [socket, roomId]);
+
+  // Apply theme to document
+  useEffect(() => {
+    try { localStorage.setItem('theme', theme); } catch {}
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
 
   const createRoom = () => {
     if (!socket) return;
@@ -159,12 +175,13 @@ export default function App() {
     <div className="page">
       <div className="container">
         <header className="header">
-          <h1 className="title">Realtime Bingo by great Ponmuthu</h1>
+          <h1 className="title">Realtime Bingo</h1>
           <div className="actions">
             <button onClick={createRoom} className="btn primary">Create Room</button>
             <input ref={roomInputRef} placeholder="ROOM ID" className="input" aria-label="Room ID"/>
             <button onClick={joinRoom} className="btn success">Join Room</button>
             <button onClick={restart} className="btn danger">Restart</button>
+            <button onClick={toggleTheme} className="btn">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</button>
           </div>
         </header>
 
